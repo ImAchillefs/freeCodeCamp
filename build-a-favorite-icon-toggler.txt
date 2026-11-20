@@ -1,0 +1,54 @@
+** start of index.html **
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Favorite Icon Toggler</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <ul class="item-list">
+      <li>Javascript <button class="favorite-icon">&#9825;</button></li>
+      <li>Zig <button class="favorite-icon">&#9825;</button></li>
+      <li>Rust <button class="favorite-icon">&#9825;</button></li>
+    </ul>
+  </body>
+  <footer>
+    <script src="script.js"></script>
+  </footer>
+</html>
+
+** end of index.html **
+
+** start of styles.css **
+
+.filled {
+  background: transparent;
+  border: 0px;
+}
+
+** end of styles.css **
+
+** start of script.js **
+
+const fIcon = document.querySelectorAll(".favorite-icon");
+
+function filled(i) {
+  if (i.classList.contains("filled") === false) {
+    i.classList.add("filled");
+    i.innerHTML = `&#10084;`;
+  } else {
+    i.classList.remove("filled");
+    i.innerHTML = `&#9825;`;
+  }
+}
+
+fIcon.forEach(i => {
+  i.addEventListener("click", () => filled(i));
+})
+
+
+** end of script.js **
+

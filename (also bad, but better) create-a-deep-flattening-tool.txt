@@ -1,0 +1,58 @@
+** start of script.js **
+
+function steamrollArray(arr) {
+  let count = 0;
+  let flatArr = new Array;
+  let bool = true;
+  let length = arr.length + 1; 
+
+  do {
+  
+    arr.map((elem, index, arr) => {
+      if (typeof elem === "number") {
+        flatArr.push(elem);
+      } else if (typeof elem === "string") {
+        flatArr.push(elem);
+      } else if (typeof elem === "object" && elem !== null && Array.isArray(elem) === false) {
+        flatArr.push(elem);
+      } else if (Array.isArray(elem)) {
+        if (elem.length === 0){
+          count++;
+        }
+        flatArr = flatArr.concat(elem);
+      }
+    });
+
+    for (let i of flatArr) {
+      if (Array.isArray(i)) {
+        bool = true;
+      } else {
+        bool = false;
+      }
+    }
+
+    arr = flatArr;
+    
+  } while (bool);
+
+  for(let i = 0; i < flatArr.length; i++){
+      if (Array.isArray(flatArr[i])) {
+        flatArr.splice(i,1);
+      }
+    }
+
+    let del = flatArr.length - length + count;
+
+  flatArr.splice(0, del);
+  for(let i = 0; i < flatArr.length; i++){
+      if (Array.isArray(flatArr[i])) {
+        flatArr.splice(i,1);
+      }
+    }
+  return flatArr;
+}
+
+console.log(steamrollArray([1, [], [3, [[4]]]]));
+
+** end of script.js **
+

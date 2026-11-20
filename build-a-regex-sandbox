@@ -1,0 +1,42 @@
+const regexPattern = document.getElementById("pattern");
+const stringToTest = document.getElementById("test-string");
+const testButton = document.getElementById("test-btn");
+const testResult = document.getElementById("result");
+const caseInsensitiveFlag = document.getElementById("i");
+const globalFlag = document.getElementById("g");
+
+
+function getFlags() {
+  if (caseInsensitiveFlag.checked && globalFlag.checked){
+    return "ig";
+  }
+  if (caseInsensitiveFlag.checked) {
+    return "i"
+  }
+  if (globalFlag.checked) {
+    return "g"
+  }
+  if (!caseInsensitiveFlag.checked && !globalFlag.checked) {
+    return "";
+  }
+}
+ 
+testButton.addEventListener("click", () => {
+  let regex = new RegExp(regexPattern.value, getFlags());
+  let string = stringToTest.textContent;
+  result.textContent = "";
+  if (regex.test(string)) {
+    stringToTest.innerHTML = stringToTest.innerHTML.replace(regex,(i) => {
+      if (result.textContent.length === 0) {
+        result.textContent = i;
+      } else {
+        result.textContent += `, ${i}`;
+      }
+      return `<span class="highlight">${i}</span>`
+    });
+  } else {
+    result.textContent = "no match";
+  } 
+  
+})
+

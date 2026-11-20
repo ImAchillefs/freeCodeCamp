@@ -1,0 +1,23 @@
+** start of script.js **
+
+function diffArray(arr1, arr2) {
+  let concArr = arr1.concat(arr2);
+  return concArr.filter(elem => {
+      let count = 0;
+    for (let i=0; i<concArr.length; i++) {
+      if (elem === concArr[i]) {
+        count++
+      }
+    }
+      if (count <= 1) {
+        return elem;
+      } else {
+        count = 0;
+      }
+  })
+}
+
+console.log(diffArray(["diorite", "andesite", "grass", "dirt", "pink wool", "dead shrub"], ["diorite", "andesite", "grass", "dirt", "dead shrub"]));
+
+** end of script.js **
+

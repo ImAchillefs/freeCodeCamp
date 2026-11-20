@@ -1,0 +1,22 @@
+** start of script.js **
+
+function smallestCommons(arr) {
+  arr.sort((a, b) => a - b);
+  let seq = new Array;
+  for (let i = arr[0]; i <= arr[1]; i++) {
+    seq.push(i);
+  }
+  let bool = false;
+  let j = 1;
+  while (bool === false) {
+    seq.map(key => key * 2);
+    bool = seq.every((key) => j % key === 0);
+    j++;
+  }
+  return j-1;
+}
+
+console.log(smallestCommons([2, 10]));
+
+** end of script.js **
+

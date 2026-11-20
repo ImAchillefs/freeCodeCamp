@@ -1,0 +1,114 @@
+            function isPalindrome(word) {
+              word = word.toLowerCase()
+              let reversed = word.split("").reverse().join("").toLowerCase();
+              if (word === reversed) {
+                return true;
+              }
+              return false;
+            }
+
+            function findPalindromeBreaks(words) {
+              if (Array.isArray(words) && words.length === 0) {
+                return []
+              }
+              let indicesArr = [];
+              words.forEach((e,i) => {
+                if (isPalindrome(e) === false){
+                  indicesArr.push(i);
+                }
+              })
+              if (indicesArr.length === words.length) {
+                return [];
+              } else {
+                return indicesArr;
+              }
+            }
+
+function findRepeatedPhrases(words, phraseLength) {
+  let indexArr = [];
+  if (phraseLength >= words.length) {
+    return [];
+  }
+
+  for (let i = 0; i < words.length - phraseLength + 1; i++) {
+    let phrase = words.slice(i,i+phraseLength);
+
+
+    for (let j = i + 1; j < words.length; j++) {
+      let newPhrase = words.slice(j, j+phraseLength);
+
+// console.log(JSON.stringify(phrase), JSON.stringify(newPhrase), JSON.stringify(phrase) === JSON.stringify(newPhrase))
+
+      if (JSON.stringify(phrase) === JSON.stringify(newPhrase)) {
+        if (!indexArr.includes(i)){
+          indexArr.push(i)
+          } 
+        if (!indexArr.includes(j)){
+           indexArr.push(j);
+        }
+      }
+    }
+  }
+
+// console.log(indexArr);
+let checkArr = [];
+
+
+  for (let i = 0; i < indexArr.length; i++) {
+    checkArr.push(words[indexArr[i]]);
+  }
+
+  for (let j = 0; j < words.length; j++){
+    for (let i = 0; i < checkArr.length; i++) {
+      if (checkArr.filter(el => el === checkArr[i]).length < 2){
+        indexArr.splice(i,1);
+      }
+    }
+  }
+  
+  
+  return indexArr;
+}
+
+// console.log(findRepeatedPhrases(["the", "cat", "sat", "the", "cat","the", "cat","the", "cat"], 2))
+// console.log(findRepeatedPhrases(["racecar", "hello", "level", "hello", "spla"],1))
+console.log(findRepeatedPhrases(["spla","hello", "hello", "spla", "hello", "spla"],1))
+
+
+            function analyzeTexts(texts, phraseLength) {
+              if (Array.isArray(texts) && texts.length === 0) {
+                return [];
+              }
+
+              let results = new Array;
+
+              for (let i = 0; i < texts.length; i++) {
+                  let repeatedPhrase = findRepeatedPhrases(texts[i], phraseLength);
+                  let palindromeBreak = findPalindromeBreaks(texts[i]);
+
+                results.push(
+                  {
+                    repeatedPhrases: repeatedPhrase,
+                    palindromeBreaks: palindromeBreak
+                  }
+                )
+              }
+
+              // for (let i = 0; i < results.length; i++) {
+              //   if (results[i].repeatedPhrases.length === 0 && results[i].palindromeBreaks.length === 0) {
+              //     results.splice(i,1);
+              //   }
+              // }
+
+
+              return results;
+            }
+
+// console.log(analyzeTexts([["racecar", "hello", "level", "hello"],["racecar", "hello", "level","racecar","hello"]], 1))
+
+// console.log(analyzeTexts([[
+//     "racecar",
+//     "hello",
+//     "level",
+//     "hello"
+// ]], 1))

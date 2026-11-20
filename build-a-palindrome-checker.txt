@@ -1,0 +1,26 @@
+const textInput = document.getElementById("text-input");
+const checkBtn = document.getElementById("check-btn");
+const result = document.getElementById("result");
+
+const nonAlphanumerical = /[^a-zA-Z0-9]/g;
+
+checkBtn.addEventListener("click", () => {
+let textInputValue = textInput.value.toUpperCase();
+let reverse = textInputValue.split("").reverse().join("");
+
+  if (textInputValue === "") {
+    alert("Please input a value");
+    return;
+  }
+textInputValue = textInputValue.replaceAll(nonAlphanumerical, "");
+reverse = reverse.replaceAll(nonAlphanumerical, "");
+
+  if (textInputValue === reverse) {
+    return result.textContent = `${textInput.value} is a palindrome`;
+  } else {
+    return result.textContent = `${textInput.value} is not a palindrome`;
+  }
+
+
+  textInput.value = "";
+})

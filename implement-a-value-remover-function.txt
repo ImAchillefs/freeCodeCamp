@@ -1,0 +1,20 @@
+** start of script.js **
+
+function destroyer(arr, ...args) {
+  return arr.filter(elem => {
+    let count=0;
+    for (let i=0; i<args.length; i++){
+      if (elem !== args[i]){
+        count++
+      }
+    }
+    if (count===args.length){
+      return true;
+    }
+  })
+}
+
+console.log(destroyer([3, 5, 1, 2, 2], 2, 3, 5))
+
+** end of script.js **
+

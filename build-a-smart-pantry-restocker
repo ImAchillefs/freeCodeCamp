@@ -1,0 +1,114 @@
+const pantry = [
+  { sku: "A10", name: "Tomatoes", qty: 4, expires: "2027-01-01", zone: "fridge" },
+  { sku: "D43", name: "Pineapples", qty: 2, expires: "2020-01-01", zone: "general" }
+];
+
+const rawData = [
+  "A10|Tomatoes|5|2027-01-01",
+  "B21|Bananas|10|2027-01-01",
+  "C32|Eggs|3|2027-01-01|fridge",
+  "C32|Eggs|3|2027-01-01",
+  "D43|Pineapples|0|2027-01-01",
+  "E54|Peppers|-1|2027-01-01|fridge"
+];
+
+function parseShipment(rawData) {
+  let splitArr = [];
+  let rawArr = [];
+
+  for (let i=0; i < rawData.length; i++) {
+    splitArr.push(rawData[i].split("|"));
+  }
+
+  for (let i=0; i < splitArr.length; i++) {
+    if (splitArr[i].length === 5) {
+      rawArr[i] = {sku: splitArr[i][0], name: splitArr[i][1], qty: splitArr[i][2], expires: splitArr[i][3], zone: splitArr[i][4]}
+    } else {
+      rawArr[i] = {sku: splitArr[i][0], name: splitArr[i][1], qty: splitArr[i][2], expires: splitArr[i][3], zone: "general"}
+    }
+  }
+
+  for (let i=0; i<rawArr.length; i++) {
+    for (let j=0; j<rawArr.length; j++) {
+      if (i != j && rawArr[i].sku === rawArr[j].sku) {
+        rawArr.splice(j,1);
+      }
+    }
+  }
+
+  rawArr.forEach(i => i.qty = Number(i.qty));
+  
+  return rawArr;
+}
+
+function planRestock(pantry, shipment) {
+  let actions = [];
+  for (let i=0; i<shipment.length; i++) {
+    if (shipment[i].qty <= 0) {
+      actions[i] = {type: "discard", item: shipment[i]};
+    } else if (JSON.stringify(pantry).includes(JSON.stringify(shipment[i].sku))) {
+      actions[i] = {type: "restock", item: shipment[i]};
+    } else {
+      actions[i] = {type: "donate", item: shipment[i]};
+    }
+  }
+  return actions;
+}
+
+function groupByZone(actions) {
+  let zones = [];
+  let groups = {};
+  let arr = [];
+
+  for (let i = 0; i < actions.length; i++) {
+    zones.push(actions[i]["item"]["zone"])
+  }
+
+  for (let i = 0; i < zones.length; i++) {
+    for (let j = 0; j < zones.length; j++) {
+      if (i != j && zones[i] === zones[j]) {
+        zones.splice(j,1);
+      }
+    }
+  }
+
+  for (let i = 0; i < zones.length; i++) {
+        groups[zones[i]] = [];
+    for (let j = 0; j < actions.length; j++) {
+      if (actions[j]["item"]["zone"] === zones[i]) {
+        groups[zones[i]].push(actions[j]);
+      }
+    }
+  }
+  return groups;
+}
+
+function clonePantry(pantry) {
+  const clone = JSON.parse(JSON.stringify(pantry));
+  return clone;
+}
+
+console.log(groupByZone(planRestock(clonePantry(pantry), parseShipment(rawData))));
+
+
+
+// function parseShipment(rawData) {
+//   let objArr = [];
+//   for (let i=0; i<rawData.length; i++) {
+//     let data = rawData[i].split("|");
+
+//     for (let j=0; j<5;j++) {
+//       objArr[i].sku = rawData[i].split("|")[0];
+//     }
+    
+//   }
+//   // console.log(objArr)
+// }
+
+
+
+// console.log(parseShipment([
+//   "A10|Tomatoes|5|2027-01-01",
+//   "B21|Bananas|10|2027-01-01|fridge",
+//   "C32|Eggs|3|2027-01-01|pantry"
+// ]));
